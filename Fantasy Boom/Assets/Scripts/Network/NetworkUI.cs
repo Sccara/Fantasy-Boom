@@ -4,17 +4,28 @@ using UnityEngine.UI;
 
 public class NetworkUI : MonoBehaviour
 {
-    public void StartHost()
+    [SerializeField] private Button hostButton;
+    [SerializeField] private Button clientButton;
+    [SerializeField] private Button serverButton;
+
+    private void Awake()
+    {
+        hostButton.onClick.AddListener(StartHost);
+        clientButton.onClick.AddListener(StartClient);
+        serverButton.onClick.AddListener(StartServer);
+    }
+
+    private void StartHost()
     {
         NetworkManager.Singleton.StartHost();
     }
 
-    public void StartClient()
+    private void StartClient()
     {
         NetworkManager.Singleton.StartClient();
     }
 
-    public void StartServer()
+    private void StartServer()
     {
         NetworkManager.Singleton.StartServer();
     }
