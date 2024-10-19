@@ -1,24 +1,31 @@
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Unity.Netcode;
 
-public class CameraFollow : MonoBehaviour
+public class CameraFollow : NetworkBehaviour
 {
-    public static CameraFollow Instance { get; set; }
+    public GameObject player;
+    public Vector3 offset;
+    private Quaternion initialRotation;
 
-    private void Awake()
+    private void Start()
     {
-        Instance = this;
+        initialRotation = transform.rotation;
     }
 
-    [SerializeField] private CinemachineVirtualCamera virtualCamera;
-
-    public void SetVirtualCamera(Transform player)
+    public void LateUpdate()
     {
-        Debug.Log($"VCAM IS NULL: {virtualCamera == null}");
-        Debug.Log($"PLAYER IS NULL: {player == null}");
+        FollowPlayer();
+    }
 
-        virtualCamera.Follow = player;
-        virtualCamera.LookAt = player;
-        Debug.Log("Setted!");
+    private void FollowPlayer()
+    {
+        if (player != null)
+        {
+            transform.position = player.transform.position + offset;
+
+            transform.rotation = initialRotation;
+        }
     }
 }

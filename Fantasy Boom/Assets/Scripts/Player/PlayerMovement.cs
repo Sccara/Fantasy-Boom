@@ -1,15 +1,16 @@
 using UnityEngine;
 using Unity.Netcode;
-using Cinemachine;
 
 public class PlayerMovement : NetworkBehaviour
 {
-    private CinemachineVirtualCamera cam;
+    [SerializeField] private GameObject playerCamera;
     public float moveSpeed = 5f;
+    public float rotationSpeed = 10f;
 
     private void Start()
     {
-        SetVirtualCamera();
+        if (IsLocalPlayer)
+            playerCamera.SetActive(true);
     }
 
     void FixedUpdate()
@@ -32,12 +33,13 @@ public class PlayerMovement : NetworkBehaviour
     {
         // —ервер сам использует deltaTime дл€ перемещени€
         transform.Translate(movement * moveSpeed * deltaTime, Space.World);
-    }
 
-    private void SetVirtualCamera()
-    {
-        cam = FindObjectOfType<CinemachineVirtualCamera>();
-        cam.Follow = gameObject.transform;
-        cam.LookAt = gameObject.transform;
+        if (movement != Vector3.zero)
+        {
+            // ѕоворачиваем игрока в направлении движени€
+            Quaternion targetRotation = Quaternion.LookRotation(movement);
+
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * deltaTime);
+        }
     }
 }
