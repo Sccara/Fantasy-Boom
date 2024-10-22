@@ -23,7 +23,7 @@ public class ProgressBar : MonoBehaviour
 
     private void Start()
     {
-        OnProgress += SetText;
+        //OnProgress += SetText;
 
         if (progressImage.type != Image.Type.Filled)
         {
@@ -72,6 +72,8 @@ public class ProgressBar : MonoBehaviour
         }
 
         progressImage.fillAmount = progress;
+        progressImage.color = colorGradient.Evaluate(1 - progressImage.fillAmount);
+
         OnProgress?.Invoke(progress);
         OnCompleted?.Invoke();
     }
