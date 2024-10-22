@@ -4,8 +4,5 @@ using UnityEngine;
 
 public class Knight : Character
 {
-    public override void Attack()
-    {
 
-    }
 }
