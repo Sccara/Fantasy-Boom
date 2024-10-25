@@ -9,6 +9,8 @@ public class Character : MonoBehaviour
     [SerializeField] private Transform attackPosition;
     [SerializeField] private ProgressBar healthBar;
 
+    [SerializeField] private CharacterSO characterConfig;
+    
     [SerializeField] private float health;
     [SerializeField] private float mana;
     [SerializeField] private float moveSpeed;
@@ -23,9 +25,9 @@ public class Character : MonoBehaviour
 
     private float maxHealth;
 
-    private void Awake()
+    private void Start()
     {
-        maxHealth = health;
+        InitializeCharacter();
     }
 
     private void Update()
@@ -35,6 +37,14 @@ public class Character : MonoBehaviour
             Attack();
             lastAttackTime = Time.time;
         }
+    }
+
+    private void InitializeCharacter()
+    {
+        maxHealth = characterConfig.health;
+        health = maxHealth;
+        mana = characterConfig.mana;
+        gameObject.name = characterConfig.characterName;
     }
 
     private bool CanAttack()

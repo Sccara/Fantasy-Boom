@@ -489,13 +489,15 @@ MonoBehaviour:
     type: 3}
   attackPosition: {fileID: 1349091888650574129}
   healthBar: {fileID: 2066524351766664643}
-  health: 100
+  characterConfig: {fileID: 11400000, guid: c3267a7fa2712d14fad5ec6cbc140a8b, type: 2}
   mana: 100
   moveSpeed: 10
   attackRange: 10
   attackDamage: 15
   projectileSpeed: 5
   explosionRadius: 1
+  attackCooldown: 1.5
+  lastAttackTime: 0
   attackType: 1
 --- !u!1 &3776413535112273869
 GameObject:
