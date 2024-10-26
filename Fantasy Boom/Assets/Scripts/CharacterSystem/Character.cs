@@ -8,21 +8,17 @@ public class Character : MonoBehaviour
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Transform attackPosition;
     [SerializeField] private ProgressBar healthBar;
-
     [SerializeField] private CharacterSO characterConfig;
-    
-    [SerializeField] private float health;
-    [SerializeField] private float mana;
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float attackRange;
-    [SerializeField] private float attackDamage;
-    [SerializeField] private float projectileSpeed;
-    [SerializeField] private float explosionRadius;
-    [SerializeField] private float attackCooldown = 1.5f;
     [SerializeField] private float lastAttackTime = 0f;
-    
-    public AttackType attackType;
 
+    private CharacterStat health;
+    private CharacterStat mana;
+    private CharacterStat moveSpeed;
+    private CharacterStat attackDamage;
+    private CharacterStat attackRange;
+    private CharacterStat attackCooldown;
+
+    private float explosionRadius;
     private float maxHealth;
 
     private void Start()
@@ -41,25 +37,32 @@ public class Character : MonoBehaviour
 
     private void InitializeCharacter()
     {
-        maxHealth = characterConfig.health;
-        health = maxHealth;
-        mana = characterConfig.mana;
+        health = new CharacterStat(characterConfig.health);
+        mana = new CharacterStat(characterConfig.mana);
+        moveSpeed = new CharacterStat(characterConfig.moveSpeed);
+        attackDamage = new CharacterStat(characterConfig.attackDamage);
+        attackRange = new CharacterStat(characterConfig.attackRange);
+        attackCooldown = new CharacterStat(characterConfig.attackCooldown);
+
         gameObject.name = characterConfig.characterName;
+
+        // Настраиваем панель здоровья
+        //SetupHealthBar();
     }
 
     private bool CanAttack()
     {
-        return Time.time >= lastAttackTime + attackCooldown;
+        return Time.time >= lastAttackTime + attackCooldown.Value;
     }
 
     public void OnTakeDamage(float damage)
     {
         Debug.Log("OnTakeDamage");
-        health -= damage;
+        health.baseValue -= damage;
 
-        healthBar.SetProgress(health / maxHealth, 3);
+        healthBar.SetProgress(health.Value / maxHealth, 3);
 
-        if (health <= 0)
+        if (health.Value <= 0)
         {
             OnDied();
         }
@@ -67,7 +70,7 @@ public class Character : MonoBehaviour
 
     public void Attack()
     {
-        switch (attackType)
+        switch (characterConfig.attackType)
         {
             case AttackType.Melee:
                 PerformMeleeAttack();
@@ -82,14 +85,14 @@ public class Character : MonoBehaviour
 
     private void PerformMeleeAttack()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange.Value);
         foreach (var hitCollider in hitColliders)
         {
             Debug.Log($"Hit Collider name {hitCollider.gameObject.name}");
             Character target = hitCollider.GetComponent<Character>() ?? hitCollider.GetComponentInParent<Character>();
             if (target != null && target != this) // Атакуем только других персонажей
             {
-                target.OnTakeDamage(attackDamage);
+                target.OnTakeDamage(attackDamage.Value);
             }
         }
     }
@@ -102,9 +105,9 @@ public class Character : MonoBehaviour
         Projectile projScript = projectile.GetComponent<Projectile>();
         projScript.Initialize(transform.forward); // Передаём направление атаки
 
-        projScript.damage = attackDamage;
+        projScript.damage = attackDamage.Value;
         projScript.explosionRadius = explosionRadius;
-        projScript.maxRange = attackRange; // Передаём дальность атаки персонажа
+        projScript.maxRange = attackRange.Value; // Передаём дальность атаки персонажа
     }
 
     private void OnDied()
