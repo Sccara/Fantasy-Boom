@@ -236,3 +236,9 @@ Start importing Assets/Scripts/Modifier.cs using Guid(028578558de5d8842a2cd37b96
  -> (artifact id: 'b856f6d5428e707757121c83f9bc9552') in 0.001189 seconds
 Number of updated asset objects reloaded before import = 0
 Number of asset objects unloaded after import = 0
+========================================================================
+Received Prepare
+Caller must complete domain reload
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  2.918 seconds
