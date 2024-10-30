@@ -18,3 +18,4 @@ MonoBehaviour:
   moveSpeed: 10
   abilities:
   - {fileID: 11400000, guid: 044aa79e91e9de44382704f0d35ef48d, type: 2}
+  - {fileID: 11400000, guid: 520505958124dfe40afbf2a163950d4e, type: 2}

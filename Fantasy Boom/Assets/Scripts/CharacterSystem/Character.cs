@@ -49,8 +49,6 @@ public class Character : NetworkBehaviour
 
     public void OnTakeDamage(float damage)
     {
-        Debug.Log($"OnTakeDamage on {gameObject.name}");
-
         Health -= damage;
 
         UpdateHealthBar();

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Melee Attack", menuName = "Ability/Melee Attack")]
-public class MeleeAttackSO : AbilitySO
+public class MeleeAttackAbilitySO : AbilitySO
 {
     public float attackDamage;
     public float attackRange;
@@ -12,8 +12,6 @@ public class MeleeAttackSO : AbilitySO
 
     public override void Use(Character owner)
     {
-        Debug.Log($"{owner.name} using ability: {abilityName}");
-
         Collider[] hitColliders = Physics.OverlapSphere(owner.transform.position + owner.transform.forward * (attackRange * attackRangeOffset), attackRange);
         foreach (var hitCollider in hitColliders)
         {
@@ -21,7 +19,6 @@ public class MeleeAttackSO : AbilitySO
             if (target != null && target != this)
             {
                 target.OnTakeDamage(attackDamage);
-                Debug.Log($"Hit collider name: {hitCollider.name}");
             }
         }
     }
