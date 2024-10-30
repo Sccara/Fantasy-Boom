@@ -9,7 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3575a2fec9e65864aa39f38ddd0701ce, type: 3}
-  m_Name: Meteor
+  m_Script: {fileID: 11500000, guid: d8645046774c53249b62d92ce23ca77f, type: 3}
+  m_Name: Melee Attack
   m_EditorClassIdentifier: 
-  abilityType: 2
+  abilityName: Spear attack
+  manaCost: 0
+  cooldown: 0
+  attackDamage: 20
+  attackRange: 2

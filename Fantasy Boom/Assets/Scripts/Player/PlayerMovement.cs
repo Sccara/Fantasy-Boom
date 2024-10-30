@@ -10,7 +10,9 @@ public class PlayerMovement : NetworkBehaviour
     private void Start()
     {
         if (IsLocalPlayer)
+        {
             playerCamera.SetActive(true);
+        }
     }
 
     void FixedUpdate()

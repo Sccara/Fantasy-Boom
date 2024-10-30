@@ -10,7 +10,7 @@ public enum ModType
 
 public enum StatType
 {
-
+    BaseValue
 }
 
 [System.Serializable]

@@ -1,24 +1,17 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public class Character : NetworkBehaviour
 {
-    [SerializeField] private GameObject projectilePrefab;
-    [SerializeField] private Transform attackPosition;
-    [SerializeField] private ProgressBar healthBar;
     [SerializeField] private CharacterSO characterConfig;
-    [SerializeField] private float lastAttackTime = 0f;
+    [SerializeField] private ProgressBar healthBar;
+    
+    public List<AbilitySO> abilities;
 
-    private CharacterStat health;
-    private CharacterStat mana;
-    private CharacterStat moveSpeed;
-    private CharacterStat attackDamage;
-    private CharacterStat attackRange;
-    private CharacterStat attackCooldown;
+    public float Health { get; private set; }
+    public float Mana {  get; private set; }
 
-    private float explosionRadius;
     private float maxHealth;
 
     private void Start()
@@ -28,86 +21,52 @@ public class Character : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.X) && CanAttack())
+        if (Input.GetKeyDown(KeyCode.X))
         {
-            Attack();
-            lastAttackTime = Time.time;
+            abilities[0].Use(this);
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            abilities[1].Use(this);
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            abilities[2].Use(this);
         }
     }
 
     private void InitializeCharacter()
     {
-        health = new CharacterStat(characterConfig.health);
-        mana = new CharacterStat(characterConfig.mana);
-        moveSpeed = new CharacterStat(characterConfig.moveSpeed);
-        attackDamage = new CharacterStat(characterConfig.attackDamage);
-        attackRange = new CharacterStat(characterConfig.attackRange);
-        attackCooldown = new CharacterStat(characterConfig.attackCooldown);
+        Health = characterConfig.health;
+        Mana = characterConfig.mana;
 
-        gameObject.name = characterConfig.characterName;
+        maxHealth = Health;
 
-        // Настраиваем панель здоровья
-        //SetupHealthBar();
-    }
-
-    private bool CanAttack()
-    {
-        return Time.time >= lastAttackTime + attackCooldown.Value;
+        abilities = characterConfig.abilities;
     }
 
     public void OnTakeDamage(float damage)
     {
-        Debug.Log("OnTakeDamage");
-        health.baseValue -= damage;
+        Debug.Log($"OnTakeDamage on {gameObject.name}");
 
-        healthBar.SetProgress(health.Value / maxHealth, 3);
+        Health -= damage;
 
-        if (health.Value <= 0)
+        UpdateHealthBar();
+
+        if (Health <= 0)
         {
             OnDied();
         }
     }
 
-    public void Attack()
+    private void UpdateHealthBar()
     {
-        switch (characterConfig.attackType)
+        if (healthBar != null)
         {
-            case AttackType.Melee:
-                PerformMeleeAttack();
-                break;
-            case AttackType.Ranged:
-                PerformRangedAttack();
-                break;
-            default:
-                break;
+            healthBar.SetProgress(Health / maxHealth, 3);
         }
-    }
-
-    private void PerformMeleeAttack()
-    {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange.Value);
-        foreach (var hitCollider in hitColliders)
-        {
-            Debug.Log($"Hit Collider name {hitCollider.gameObject.name}");
-            Character target = hitCollider.GetComponent<Character>() ?? hitCollider.GetComponentInParent<Character>();
-            if (target != null && target != this) // Атакуем только других персонажей
-            {
-                target.OnTakeDamage(attackDamage.Value);
-            }
-        }
-    }
-
-    private void PerformRangedAttack()
-    {
-        GameObject projectile = Instantiate(projectilePrefab, attackPosition.position, transform.rotation);
-
-        // Добавляем параметры в снаряд
-        Projectile projScript = projectile.GetComponent<Projectile>();
-        projScript.Initialize(transform.forward); // Передаём направление атаки
-
-        projScript.damage = attackDamage.Value;
-        projScript.explosionRadius = explosionRadius;
-        projScript.maxRange = attackRange.Value; // Передаём дальность атаки персонажа
     }
 
     private void OnDied()
@@ -115,14 +74,10 @@ public class Character : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void SetupHealthBar(Camera camera)
+    private void OnDrawGizmosSelected()
     {
-        // Setup face camera logic
-    }
-}
+        Gizmos.color = Color.red;
 
-public enum AttackType
-{
-    Melee,
-    Ranged
+        Gizmos.DrawWireSphere(transform.position + transform.forward * 2 * 1.25f, 2);
+    }
 }

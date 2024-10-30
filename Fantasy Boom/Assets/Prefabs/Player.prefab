@@ -239,7 +239,6 @@ GameObject:
   - component: {fileID: 428853179427729099}
   - component: {fileID: 2292941090816747148}
   - component: {fileID: 1211527685961790117}
-  - component: {fileID: 7160489019633963826}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -312,29 +311,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &7160489019633963826
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3053221842345686847}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3086995309131334703
 GameObject:
   m_ObjectHideFlags: 0
@@ -418,7 +394,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2539130381
+  GlobalObjectIdHash: 3565772134
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -485,20 +461,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d22e9d4ee55d0794a9ba3b1caf68045e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 7892370321490236639, guid: c7be5de523b879b4f96b442e5802c648,
-    type: 3}
-  attackPosition: {fileID: 1349091888650574129}
+  characterConfig: {fileID: 11400000, guid: 046c6f09a708d93408018d10ec7d2fae, type: 2}
   healthBar: {fileID: 2066524351766664643}
-  characterConfig: {fileID: 11400000, guid: c3267a7fa2712d14fad5ec6cbc140a8b, type: 2}
-  mana: 100
-  moveSpeed: 10
-  attackRange: 10
-  attackDamage: 15
-  projectileSpeed: 5
-  explosionRadius: 1
-  attackCooldown: 1.5
-  lastAttackTime: 0
-  attackType: 1
+  abilities: []
 --- !u!1 &3776413535112273869
 GameObject:
   m_ObjectHideFlags: 0
